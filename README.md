@@ -32,7 +32,6 @@
 <h3 align="center">downshutter</h3>
 
   <p align="center">
-    project_description
     <br />
     <a href="https://github.com/HansG9/downshutter"><strong>Explore the docs »</strong></a>
     <br />
