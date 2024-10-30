@@ -37,19 +37,25 @@ Future<void> main() async {
 
   runApp(const MyApp());
   /*doWhenWindowReady(() {*/
-  const initialSize = Size(300, 500);
+  const initialSize = Size(300, 480);
 
-  windowManager.setSize(initialSize);
+  appWindow.size = initialSize;
+  appWindow.minSize = initialSize;
+  appWindow.maxSize = initialSize;
+  //appWindow.alignment = Alignment.center;
+
+  windowManager.setAlignment(Alignment.center);
+
+  /*windowManager.setSize(initialSize);
   windowManager.setMaximumSize(initialSize);
   windowManager.setMinimumSize(initialSize);
   windowManager.setAlignment(Alignment.center);
 
   windowManager.setResizable(false);
-  windowManager.setMinimizable(false);
-  windowManager.setMinimizable(false);
+  windowManager.setMinimizable(false);*/
 
   windowManager.setAlwaysOnTop(true);
-  windowManager.setAsFrameless();
+  //windowManager.setAsFrameless();
   /*});*/
 }
 
@@ -290,7 +296,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         backgroundColor: Colors.transparent,
         body: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(5),
             color: Colors.red,
           ),
           height: 500,
@@ -328,7 +334,8 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: fgColor,
-                      shape: const StadiumBorder(),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
                       padding: const EdgeInsets.all(12),
                     ), //Colors.red),
                     child: const Text(
@@ -351,7 +358,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
         backgroundColor: Colors.transparent,
         body: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(5),
             color: SystemTheme.accentColor.accent,
           ),
           height: 500,
@@ -454,7 +461,7 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                     preferBelow: false,
                     textStyle: TextStyle(
                       color: SystemTheme.accentColor.accent,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       fontSize: 14,
                     ),
                     waitDuration: const Duration(seconds: 1),
@@ -463,12 +470,17 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
                         windowManager.hide();
                       },
                       style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
                           elevation: 0,
-                          minimumSize: const Size(20, 20),
-                          backgroundColor: Colors.red),
-                      child: const Icon(
+                          minimumSize: const Size(60, 20),
+                          maximumSize: const Size(60, 20),
+                          backgroundColor: Colors.red,
+                          padding: EdgeInsets.zero),
+                      child: Icon(
                         Icons.close_rounded,
+                        color: fgColor,
                         size: 20,
                       ),
                     ),

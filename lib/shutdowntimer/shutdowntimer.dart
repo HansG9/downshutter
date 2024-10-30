@@ -41,7 +41,7 @@ class _ShutdownTimerState extends State<ShutdownTimer> {
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(5),
           color: SystemTheme.accentColor.dark,
         ),
         padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
@@ -59,7 +59,7 @@ class _ShutdownTimerState extends State<ShutdownTimer> {
                   "Shutdowntimer",
                   style: TextStyle(
                     color: fgColor,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                     fontSize: 14,
                   ),
                 ),
@@ -75,15 +75,15 @@ class _ShutdownTimerState extends State<ShutdownTimer> {
                   hnm: 0,
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
+                  padding: const EdgeInsets.fromLTRB(3, 0, 3, 32),
                   child: SizedBox(
-                    height: 81,
+                    height: 70,
                     child: Text(
                       ":",
                       style: TextStyle(
                         fontSize: 54,
                         color: fgColor,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -116,16 +116,19 @@ class _ShutdownTimerState extends State<ShutdownTimer> {
                         preferBelow: false,
                         textStyle: TextStyle(
                           color: SystemTheme.accentColor.accent,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           fontSize: 14,
                         ),
                         waitDuration: const Duration(seconds: 1),
                         child: ElevatedButton(
                           onPressed: onPlayOrPause,
                           style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor: SystemTheme.accentColor.light,
-                          ),
+                              elevation: 0,
+                              backgroundColor: SystemTheme.accentColor.light,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              padding: EdgeInsets.zero),
                           child: Icon(
                             shutdownTimerActivated
                                 ? Icons.pause_rounded
@@ -138,7 +141,7 @@ class _ShutdownTimerState extends State<ShutdownTimer> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(
-                        top: 11,
+                        top: 8,
                       ),
                     ),
                     SizedBox(
@@ -153,16 +156,19 @@ class _ShutdownTimerState extends State<ShutdownTimer> {
                         preferBelow: true,
                         textStyle: TextStyle(
                           color: SystemTheme.accentColor.accent,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           fontSize: 14,
                         ),
                         waitDuration: const Duration(seconds: 1),
                         child: ElevatedButton(
                           onPressed: onReset,
                           style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor: SystemTheme.accentColor.light,
-                          ),
+                              elevation: 0,
+                              backgroundColor: SystemTheme.accentColor.light,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              padding: EdgeInsets.zero),
                           child: Icon(
                             Icons.replay_rounded,
                             size: 32,
