@@ -40,13 +40,15 @@ class _DigitState extends State<Digit> {
             fgColor: fgColor,
           ),
           SizedBox(
-            height: 62,
+            height: 50,
             child: Text(
               shutdownTimerDigit.toString().padLeft(2, '0'),
               style: TextStyle(
-                fontSize: 54,
+                fontSize: 52,
                 color: fgColor,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
+                //backgroundColor: Colors.white38,
+                height: 1,
               ),
               textAlign: TextAlign.center,
             ),
@@ -55,7 +57,7 @@ class _DigitState extends State<Digit> {
             "${hnm == 0 ? "Hour" : "Minute"}${shutdownTimerDigit != 1 ? "s" : ""}",
             style: TextStyle(
               color: SystemTheme.accentColor.light,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               fontSize: 14,
             ),
             textAlign: TextAlign.center,

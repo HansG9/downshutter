@@ -40,7 +40,7 @@ class _ShutdownTimerChangeBtnState extends State<ShutdownTimerChangeBtn> {
         preferBelow: value < 0,
         textStyle: TextStyle(
           color: SystemTheme.accentColor.accent,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w700,
           fontSize: 14,
         ),
         waitDuration: const Duration(seconds: 1),
@@ -55,10 +55,15 @@ class _ShutdownTimerChangeBtnState extends State<ShutdownTimerChangeBtn> {
             style: ElevatedButton.styleFrom(
               elevation: 0,
               backgroundColor: SystemTheme.accentColor.light,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              padding: EdgeInsets.zero,
             ),
             child: Icon(
               value > 0 ? Icons.arrow_drop_up : Icons.arrow_drop_down,
               color: fgColor,
+              size: 32,
             ),
           ),
         ),

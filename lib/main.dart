@@ -37,19 +37,25 @@ Future<void> main() async {
 
   runApp(const MyApp());
   /*doWhenWindowReady(() {*/
-  const initialSize = Size(300, 500);
+  const initialSize = Size(300, 480);
 
-  windowManager.setSize(initialSize);
+  appWindow.size = initialSize;
+  appWindow.minSize = initialSize;
+  appWindow.maxSize = initialSize;
+  //appWindow.alignment = Alignment.center;
+
+  windowManager.setAlignment(Alignment.center);
+
+  /*windowManager.setSize(initialSize);
   windowManager.setMaximumSize(initialSize);
   windowManager.setMinimumSize(initialSize);
   windowManager.setAlignment(Alignment.center);
 
   windowManager.setResizable(false);
-  windowManager.setMinimizable(false);
-  windowManager.setMinimizable(false);
+  windowManager.setMinimizable(false);*/
 
   windowManager.setAlwaysOnTop(true);
-  windowManager.setAsFrameless();
+  //windowManager.setAsFrameless();
   /*});*/
 }
 
@@ -288,195 +294,218 @@ class _MyHomePageState extends State<MyHomePage> with WindowListener {
     if (shutdown) {
       return Scaffold(
         backgroundColor: Colors.transparent,
-        body: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.red,
-          ),
-          height: 500,
-          width: 300,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "Your PC is about to shut down!",
-                    style: TextStyle(
-                        color: fgColor,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 24),
-                    textAlign: TextAlign.center,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      setState(() {
-                        shutdownTimFinal.cancel();
-                        shutdown = false;
-                        debugPrint("shutdownCanceled");
-                      });
-                      //windowManager.blur();
-                      windowManager.hide();
-
-                      final prefs = await SharedPreferences.getInstance();
-                      shutdownTimerH = prefs.getInt("shutdownTimerH") ?? 0;
-                      shutdownTimerM = prefs.getInt("shutdownTimerM") ?? 0;
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: fgColor,
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.all(12),
-                    ), //Colors.red),
-                    child: const Text(
-                      "Cancel shutdown!",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ],
+        body: Stack(
+          children: [
+            DragToMoveArea(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.red,
+                ),
+                height: 500,
+                width: 300,
               ),
             ),
-          ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DragToMoveArea(
+                      child: Text(
+                        "Your PC is about to shut down!",
+                        style: TextStyle(
+                            color: fgColor,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 24),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        setState(() {
+                          shutdownTimFinal.cancel();
+                          shutdown = false;
+                          debugPrint("shutdownCanceled");
+                        });
+                        //windowManager.blur();
+                        windowManager.hide();
+
+                        final prefs = await SharedPreferences.getInstance();
+                        shutdownTimerH = prefs.getInt("shutdownTimerH") ?? 0;
+                        shutdownTimerM = prefs.getInt("shutdownTimerM") ?? 0;
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: fgColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        padding: const EdgeInsets.all(12),
+                      ), //Colors.red),
+                      child: const Text(
+                        "Cancel shutdown!",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 24,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       );
     } else {
       return Scaffold(
         backgroundColor: Colors.transparent,
-        body: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: SystemTheme.accentColor.accent,
-          ),
-          height: 500,
-          width: 300,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "Welcome back!",
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: fgColor,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  DailyShutdown(
-                    onCheckChange: (value) async {
-                      setState(() {
-                        shutdownActivated = value!;
-                      });
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.setBool(
-                          "shutdownActivated", shutdownActivated);
-                    },
-                    onRangeChange: (value) async {
-                      setState(() {
-                        rangeValues = RangeValues(value.start.roundToDouble(),
-                            value.end.roundToDouble());
-                      });
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.setDouble(
-                          "rangeValuesStart", rangeValues.start);
-                      await prefs.setDouble("rangeValuesEnd", rangeValues.end);
-                      cronReStart();
-                    },
-                    shutdownActivated: shutdownActivated,
-                    fgColor: fgColor,
-                    rangeValues: rangeValues,
-                  ),
-                  ShutdownTimer(
-                    shutdownTimerChange: shutdownTimerChange,
-                    onPlayOrPause: () {
-                      if (shutdownTimerActivated) {
-                        shutdownTimer.cancel();
-                        setState(() {
-                          shutdownTimerActivated = false;
-                        });
-                      } else if (shutdownTimerM > 0 || shutdownTimerH > 0) {
-                        runShutdownTimer();
-                      }
-                    },
-                    onReset: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      int tempShutdownTimerH =
-                          prefs.getInt("shutdownTimerH") ?? 0;
-                      int tempShutdownTimerM =
-                          prefs.getInt("shutdownTimerM") ?? 0;
-
-                      if (tempShutdownTimerH == shutdownTimerH &&
-                          tempShutdownTimerM == shutdownTimerM &&
-                          !shutdownTimerActivated) {
-                        setState(() {
-                          shutdownTimerH = 0;
-                          shutdownTimerM = 0;
-                        });
-                      } else {
-                        setState(() {
-                          shutdownTimerH = tempShutdownTimerH;
-                          shutdownTimerM = tempShutdownTimerM;
-                        });
-                      }
-
-                      await prefs.setInt("shutdownTimerH", shutdownTimerH);
-                      await prefs.setInt("shutdownTimerM", shutdownTimerM);
-
-                      if (shutdownTimerActivated) {
-                        shutdownTimer.cancel();
-                        setState(() {
-                          shutdownTimerActivated = false;
-                        });
-                      }
-                    },
-                    fgColor: fgColor,
-                    shutdownTimerH: shutdownTimerH,
-                    shutdownTimerM: shutdownTimerM,
-                    shutdownTimerActivated: shutdownTimerActivated,
-                  ),
-                  Tooltip(
-                    message: 'Close',
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: fgColor,
-                    ),
-                    preferBelow: false,
-                    textStyle: TextStyle(
-                      color: SystemTheme.accentColor.accent,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                    waitDuration: const Duration(seconds: 1),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        windowManager.hide();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          elevation: 0,
-                          minimumSize: const Size(20, 20),
-                          backgroundColor: Colors.red),
-                      child: const Icon(
-                        Icons.close_rounded,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
+        body: Stack(
+          children: [
+            DragToMoveArea(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: SystemTheme.accentColor.accent,
+                ),
+                height: 500,
+                width: 300,
               ),
             ),
-          ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                  right: 10,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DragToMoveArea(
+                      child: Text(
+                        "Welcome back!",
+                        style: TextStyle(
+                          fontSize: 32,
+                          color: fgColor,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    DailyShutdown(
+                      onCheckChange: (value) async {
+                        setState(() {
+                          shutdownActivated = value!;
+                        });
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool(
+                            "shutdownActivated", shutdownActivated);
+                      },
+                      onRangeChange: (value) async {
+                        setState(() {
+                          rangeValues = RangeValues(value.start.roundToDouble(),
+                              value.end.roundToDouble());
+                        });
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setDouble(
+                            "rangeValuesStart", rangeValues.start);
+                        await prefs.setDouble(
+                            "rangeValuesEnd", rangeValues.end);
+                        cronReStart();
+                      },
+                      shutdownActivated: shutdownActivated,
+                      fgColor: fgColor,
+                      rangeValues: rangeValues,
+                    ),
+                    ShutdownTimer(
+                      shutdownTimerChange: shutdownTimerChange,
+                      onPlayOrPause: () {
+                        if (shutdownTimerActivated) {
+                          shutdownTimer.cancel();
+                          setState(() {
+                            shutdownTimerActivated = false;
+                          });
+                        } else if (shutdownTimerM > 0 || shutdownTimerH > 0) {
+                          runShutdownTimer();
+                        }
+                      },
+                      onReset: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        int tempShutdownTimerH =
+                            prefs.getInt("shutdownTimerH") ?? 0;
+                        int tempShutdownTimerM =
+                            prefs.getInt("shutdownTimerM") ?? 0;
+
+                        if (tempShutdownTimerH == shutdownTimerH &&
+                            tempShutdownTimerM == shutdownTimerM &&
+                            !shutdownTimerActivated) {
+                          setState(() {
+                            shutdownTimerH = 0;
+                            shutdownTimerM = 0;
+                          });
+                        } else {
+                          setState(() {
+                            shutdownTimerH = tempShutdownTimerH;
+                            shutdownTimerM = tempShutdownTimerM;
+                          });
+                        }
+
+                        await prefs.setInt("shutdownTimerH", shutdownTimerH);
+                        await prefs.setInt("shutdownTimerM", shutdownTimerM);
+
+                        if (shutdownTimerActivated) {
+                          shutdownTimer.cancel();
+                          setState(() {
+                            shutdownTimerActivated = false;
+                          });
+                        }
+                      },
+                      fgColor: fgColor,
+                      shutdownTimerH: shutdownTimerH,
+                      shutdownTimerM: shutdownTimerM,
+                      shutdownTimerActivated: shutdownTimerActivated,
+                    ),
+                    Tooltip(
+                      message: 'Close',
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: fgColor,
+                      ),
+                      preferBelow: false,
+                      textStyle: TextStyle(
+                        color: SystemTheme.accentColor.accent,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                      ),
+                      waitDuration: const Duration(seconds: 1),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          windowManager.hide();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            elevation: 0,
+                            minimumSize: const Size(60, 20),
+                            maximumSize: const Size(60, 20),
+                            backgroundColor: Colors.red,
+                            padding: EdgeInsets.zero),
+                        child: Icon(
+                          Icons.close_rounded,
+                          color: fgColor,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       );
     }

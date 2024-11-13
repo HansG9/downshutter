@@ -34,7 +34,7 @@ class _DailyShutdownState extends State<DailyShutdown> {
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(5),
           color: SystemTheme.accentColor.dark,
         ),
         padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
@@ -52,7 +52,7 @@ class _DailyShutdownState extends State<DailyShutdown> {
                   "Daily shutdown",
                   style: TextStyle(
                     color: fgColor,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                     fontSize: 14,
                   ),
                 ),
@@ -76,7 +76,7 @@ class _DailyShutdownState extends State<DailyShutdown> {
                         "Active:",
                         style: TextStyle(
                           color: fgColor,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                           fontSize: 14,
                         ),
                       ),
@@ -92,7 +92,7 @@ class _DailyShutdownState extends State<DailyShutdown> {
                       preferBelow: false,
                       textStyle: TextStyle(
                         color: SystemTheme.accentColor.accent,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         fontSize: 14,
                       ),
                       waitDuration: const Duration(seconds: 1),
@@ -115,7 +115,7 @@ class _DailyShutdownState extends State<DailyShutdown> {
                 top: 12,
                 left: 12,
                 right: 12,
-                bottom: 12,
+                bottom: 6,
               ),
               child: Container(
                 decoration: BoxDecoration(
@@ -136,7 +136,7 @@ class _DailyShutdownState extends State<DailyShutdown> {
                           "Between:",
                           style: TextStyle(
                             color: fgColor,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                             fontSize: 14,
                           ),
                         ),
@@ -151,7 +151,7 @@ class _DailyShutdownState extends State<DailyShutdown> {
                       preferBelow: false,
                       textStyle: TextStyle(
                         color: SystemTheme.accentColor.accent,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         fontSize: 14,
                       ),
                       waitDuration: const Duration(seconds: 1),
@@ -160,8 +160,8 @@ class _DailyShutdownState extends State<DailyShutdown> {
                         alignment: Alignment.center,
                         child: RangeSlider(
                           activeColor: fgColor,
-                          overlayColor: const MaterialStatePropertyAll(
-                              Colors.transparent),
+                          overlayColor:
+                              const WidgetStatePropertyAll(Colors.transparent),
                           values: rangeValues,
                           min: 0,
                           max: 23,
@@ -183,8 +183,9 @@ class _DailyShutdownState extends State<DailyShutdown> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: fgColor,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 fontSize: 34,
+                height: 1,
               ),
             ),
           ],
